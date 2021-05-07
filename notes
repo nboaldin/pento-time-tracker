@@ -1,0 +1,12 @@
+Backend
+    -Need timeout on db read/write ctx
+    -Handling of res codes
+    -Error handling
+    -Shouldn't put session name and uuid in params?
+    -Pull vars from env
+
+Frontend
+    -Regex input fields to allow one word, valid names
+    -Check sumbit error on form
+    -Form will create new users is casing is different
+    -Inconsistent use of id and userId
