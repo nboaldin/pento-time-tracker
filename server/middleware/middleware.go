@@ -20,7 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const mongoURI = "REDACTED"
+const mongoURI = "mongodb+srv://root:SERD6whew.lah.runk@pento-time-tracker.zn3fi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 func init() {
 	err := mgm.SetDefaultConfig(nil, "pento_tt", options.Client().ApplyURI(mongoURI))
@@ -48,16 +48,41 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	foundUser, err := findFirstUser(user)
 	fmt.Println("!!!!!!!!!!!!! FOUND USER", foundUser)
+
 	if err != nil {
-		log.Println("Error finding user")
-		err = createOneUser(user)
+		log.Println("Error finding user", err)
+		createdUser, err := createOneUser(user)
 		if err != nil {
-			log.Print("Error creating user")
+			log.Print("Error creating user", err)
 		}
-		log.Println("!!!!!!!!!!!!! USER CREATED", user)
-		encoder.Encode(user)
+		log.Println("!!!!!!!!!!!!! USER CREATED", createdUser)
+		encoder.Encode(createdUser)
 	}
-	encoder.Encode(foundUser)
+	if foundUser != nil {
+		encoder.Encode(foundUser)
+	}
+
+}
+
+func findFirstUser(user models.User) (*models.User, error) {
+	// foundUser := &models.User{}
+	coll := mgm.Coll(&user)
+	fmt.Printf("First and last name: %s %s \n", user.FirstName, user.LastName)
+	err := coll.First(bson.M{"firstname": user.FirstName, "lastname": user.LastName}, &user)
+
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func createOneUser(user models.User) (*models.User, error) {
+	newUser := models.NewUser(user.FirstName, user.LastName)
+	err := mgm.Coll(newUser).Create(newUser)
+	if err != nil {
+		return nil, err
+	}
+	return newUser, nil
 }
 
 func SessionStart(w http.ResponseWriter, r *http.Request) {
@@ -161,26 +186,4 @@ func stopSession(params map[string]string, session models.Session) (*models.User
 	}
 
 	return foundUser, nil
-}
-
-func findFirstUser(user models.User) (*models.User, error) {
-	foundUser := &models.User{}
-	coll := mgm.Coll(foundUser)
-	fmt.Printf("First and last name: %s %s \n", user.FirstName, user.LastName)
-	err := coll.First(bson.M{"firstname": user.FirstName, "lastname": user.LastName}, foundUser)
-
-	if err != nil {
-		return nil, err
-	}
-	return foundUser, nil
-}
-
-func createOneUser(user models.User) error {
-	newUser := models.NewUser(user.FirstName, user.LastName)
-	err := mgm.Coll(newUser).Create(newUser)
-	if err != nil {
-		return err
-	}
-	log.Println("User created", user)
-	return nil
 }
