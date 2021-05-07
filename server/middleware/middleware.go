@@ -20,7 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const mongoURI = "mongodb+srv://root:SERD6whew.lah.runk@pento-time-tracker.zn3fi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const mongoURI = "REDACTED"
 
 func init() {
 	err := mgm.SetDefaultConfig(nil, "pento_tt", options.Client().ApplyURI(mongoURI))
