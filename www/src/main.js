@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 axios.defaults.baseURL = "http://localhost:8080/api";
 axios({
-  // withCredentials: true,
+  withCredentials: true,
   // credentials: 'same-origin',
   headers: { "content-type": "application/x-www-form-urlencoded" }
 });

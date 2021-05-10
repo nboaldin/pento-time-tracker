@@ -10,3 +10,4 @@ Frontend
     -Check sumbit error on form
     -Form will create new users is casing is different
     -Inconsistent use of id and userId
+    -New user creation needs to clear all sessions from view
