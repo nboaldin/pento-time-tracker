@@ -4,6 +4,7 @@ import (
 	// "context"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	// "io/ioutil"
 
@@ -20,9 +21,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const mongoURI = "REDACTED"
-
 func init() {
+	mongoURI := os.Getenv("PENTO_MONGOURI")
 	err := mgm.SetDefaultConfig(nil, "pento_tt", options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Fatal("Could not connect to database")

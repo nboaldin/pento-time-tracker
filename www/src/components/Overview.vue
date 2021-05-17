@@ -107,14 +107,16 @@ export default {
 
       //This will cause a duplicate in the array
       thisWeek.push(new Date(Date.now()));
-
       for (let i = todayDateDay; i >= 1; i--) {
-        console.log("Subtract days ran:", i);
-        thisWeek.push(new Date(today.setDate(today.getDate() - 1)));
+        let dayOfWeek = i - 1;
+        console.log("Todays date day moving down", dayOfWeek);
+        // use todayDateDay and subtract or add from it
+        // thisWeek.push(new Date(today.setDate(today.getDate() - i)));
       }
       for (let i = todayDateDay; i <= 5; i++) {
-        console.log("Add days ran:", i);
-        thisWeek.push(new Date(today.setDate(today.getDate() + 1)));
+        let dayOfWeek = i + 1;
+        console.log("Todays date day moving up", dayOfWeek);
+        // thisWeek.push(new Date(today.setDate(today.getDate() + i)));
       }
 
       console.log("This week array:", thisWeek);
